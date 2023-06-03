@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href={% static 'wheels_app/img/favicon.ico' %} type="image/x-icon">
+    <link rel='stylesheet' href={% static 'wheels_app/css/login_page.css' %}>
+    <title>Report Wheels Login</title>
+  </head>
+
+  <body>
+
+    <video autoplay muted loop id="background_vid">
+      <source src="{% static 'wheels_app/vid/backgroung_vid.mp4' %}" type=" video/mp4">
+    </video>
+
+    <section>
+      {% if error %}
+      <div class="error">
+        <h6 >{{error}}</h6>
+      </div>
+      {% endif %}
+    </section>
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="blurred-box">
+        <h2 class="login-heading">Log In</h2> <!-- Add a heading -->
+        <div class="user-login-box">
+          <span class="user-icon"></span>
+          <div class="user-name"></div>
+          <label for="username">Username</label> <!-- Add a label for username -->
+          <input id="username" name="username" class="user-password" type="text" />
+          <br /> <!-- Add a line break for spacing -->
+          <label for="password" class='mar-top'>Password</label> <!-- Add a label for password -->
+          <input id="password" name="password" class="user-password" type="password" />
+          <button class="submit-button" type="submit">Log In</button>
+        </div>
+      </div>
+    </form>
+
+
+
+
+   
+
+    <footer>
+      <div class="company"><span>Copyright &copy; Kokilaben Hospital</span></div>
+      <div class="profile"><span>Designed and Developed by <a href="https://github.com/ahmedther">Ahmed Qureshi</a></span></div>
+    </footer>
+
+
+
+  </body>
+
+</html>
