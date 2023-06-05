@@ -8,7 +8,7 @@ services:
       - .env
     # command: gunicorn --workers 3 --timeout 86400 --bind 0.0.0.0:8004 reports_wheels.wsgi:application
     volumes:
-      - .:/reports_wheels/
+      - .:/reports_wheels
 
   nginx:
     build:
