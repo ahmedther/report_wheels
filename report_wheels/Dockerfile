@@ -21,7 +21,8 @@ RUN apk update \
     && apk del build-base \
     && apk del git \
     && rm -rf /var/cache/apk/* \
-    && apk autoremove
+    && apk autoremove \
+    && ln -snf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && echo Asia/Kolkata > /etc/timezone
 
 
 ENV SERVER_DJANGO_ON=9009
