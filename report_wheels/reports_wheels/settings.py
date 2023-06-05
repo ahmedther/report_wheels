@@ -25,26 +25,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-st_0bs7%t8mbai+l$_yeue1s_&u5-*e71b2%r)*mt#*g5oh8j#"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = True
 
-DEBUG = False
+# DEBUG = False
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "172.20.100.81",
-    "http://localhost:8009",
-    "http://172.20.100.81:8009",
-]
+# ALLOWED_HOSTS = [
+#     "127.0.0.1",
+#     "localhost",
+#     "172.20.100.81",
+#     "http://localhost:8009",
+#     "http://172.20.100.81:8009",
+# ]
 
 
-CSRF_TRUSTED_ORIGINS = [
-    "127.0.0.1",
-    "localhost",
-    "172.20.100.81",
-    "http://localhost:8009",
-    "http://172.20.100.81:8009",
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     "127.0.0.1",
+#     "localhost",
+#     "172.20.100.81",
+#     "http://localhost:8009",
+#     "http://172.20.100.81:8009",
+# ]
 
 
 # Application definition
