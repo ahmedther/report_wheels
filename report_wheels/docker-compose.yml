@@ -1,0 +1,39 @@
+services:
+  rw_app:
+    build: .
+    restart: always
+    image: reports_wheels_docker_image
+    container_name: reports_wheels_docker_container
+    environment:
+      - SERVER_DJANGO_ON=${SERVER_DJANGO_ON}
+    # command: gunicorn --workers 3 --timeout 86400 --bind 0.0.0.0:8004 reports_wheels.wsgi:application
+    volumes:
+      - .:/reports_wheels/
+
+  nginx:
+    build:
+      context: ./nginx
+    image: reports_wheels_nginx_image
+    container_name: reports_wheels_nginx_container
+    environment:
+      - SERVER_DJANGO_ON=${SERVER_DJANGO_ON}
+    restart: always
+    ports:
+      - 8009:8009
+    volumes:
+      - ./static:/reports_wheels/static
+
+  #   depends_on:
+  #     - node
+
+  # node:
+  #   image: node:alpine
+  #   ports:
+  #     - "3000:3000"
+
+  #   volumes:
+  #     - .:/reports_wheels
+
+  #   working_dir: /reports_wheels/HTMS_App/static/HTMS_App/js
+
+  #   command: sh -c "npm install && npm run start"
