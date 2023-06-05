@@ -7,23 +7,31 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 from wheels_app.decorators import check_auth_redirect
-from wheels_app.models import TravelReports
+from wheels_app.v_helper import Helper
 
 
 @login_required(login_url="login_page")
 def home(request):
-    if request.method == "GET":
-        page = {}
-        travel_reports = TravelReports.objects.all().order_by("-id")
-        print(travel_reports)
-        # Create a paginator with 14 items per page
-        paginator = Paginator(travel_reports, 14)
-
-        # Get the requested page number from the query parameters
-        page_number = request.GET.get("page") or 1
-        page = paginator.page(page_number)
-
-        return render(request, "wheels_app/home.html", {"page": page})
+    context = {}
+    try:
+        if request.method == "GET":
+            new_report = request.GET.get("new_report")
+            if new_report:
+                context = Helper.post_new_report(request, context)
+            add_dept = request.GET.get("add_dept")
+            if add_dept:
+                context = Helper.post_add_dept(request, context)
+            print(request.GET)
+            add_travel_vendor = request.GET.get("add_travel_vendor")
+            if add_travel_vendor:
+                context = Helper.post_add_travel_vendor(request, context)
+            context = Helper.get_context(request, context)
+            context = Helper.paginator(request, context)
+            return render(request, "wheels_app/home.html", context)
+    except Exception as e:
+        context["message"] = "❌ Error --  Failed!!! ❌ "
+        context["message_inner"] = f"An Erorr has occured. Error :  {e}"
+        return render(request, "wheels_app/home.html", context)
 
 
 @check_auth_redirect
@@ -32,7 +40,6 @@ def login_page(request):
     if request.method == "GET":
         return render(request, "wheels_app/login_page.html", context)
     if request.method == "POST":
-        print(request.POST)
         # Login User
         user = authenticate(
             request,
@@ -49,3 +56,9 @@ def login_page(request):
             user_full_name = request.user.get_full_name()
             context = {"user_fullname": user_full_name}
             return redirect("home")
+
+
+@login_required(login_url="login_page")
+def logout_user(request):
+    logout(request)
+    return redirect("login_page")

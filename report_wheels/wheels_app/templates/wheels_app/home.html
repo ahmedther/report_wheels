@@ -1,16 +1,289 @@
-{% for report in page %}
-    <p>{{ report }}</p>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="{% static 'wheels_app/img/favicon.ico' %}"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="{% static 'wheels_app/css/home.css' %}" />
 
-{% endfor %}
+    <title>Report Wheels Home</title>
+  </head>
 
-<div class="pagination">
-    <span class="step-links">
-        {% if page.has_previous %}
-            <a href="?page={{ page.previous_page_number }}">previous</a>
-        {% endif %}
-        <span class="current-page">{{ page.number }}</span>
-        {% if page.has_next %}
-            <a href="?page={{ page.next_page_number }}">next</a>
-        {% endif %}
-    </span>
-</div>
+  <body>
+    <video autoplay muted loop id="background_vid">
+      <source
+        src="{% static 'wheels_app/vid/hero_video.mp4' %}"
+        type=" video/mp4"
+      />
+    </video>
+
+    <div class="navbar glass">
+      <div class="left-nav">
+        <img
+          src="{% static 'wheels_app/img/truck.gif' %}"
+          alt="Navbar Logo"
+          class="navbar-logo"
+        />
+        <div class="user-hero-ctn">
+          <h1 class="nav-head">Reports Wheels</h1>
+          <p class="user-name">Welcome's You {{user_fullname}}</p>
+        </div>
+      </div>
+      <ul class="navbar-menu">
+        <li><a href="{% url 'home' %}" class="active">Home</a></li>
+        <li><a href="#">Generate Report</a></li>
+        <li><a href="{% url 'logout_user' %}">Logout</a></li>
+      </ul>
+    </div>
+
+    <main>
+      <div class="sub-navigation">
+        <div class="btn-container">
+          <button class="glass-button add-btn">Add A Report</button>
+          <button class="glass-button add-dept-btn">Add A Department</button>
+          <button class="glass-button add-tra-ven-btn">
+            Add A Travel Vendor
+          </button>
+        </div>
+        <!-- Your sub-navigation content goes here -->
+      </div>
+
+      <div class="main-content">
+        <h1 class="main-cont-heading">Vehicle Deployment Data</h1>
+        <div class="glassmorphic-separator"></div>
+        <a href="#" class="content-rows">
+          <div class="col-1">REPORT NO.</div>
+          <div class="col-2">REPORTING TO (NAME OF GUEST)</div>
+          <div class="col-3">FLIGHT / TRAIN DETAILS</div>
+          <div class="col-4">REPORTING AT (PICK-UP LOCATION)</div>
+          <div class="col-5">TRAVEL TO/DROP LOCATION</div>
+          <div class="col-6">TRAVEL DATE</div>
+          <div class="col-7">REPORTING TIME</div>
+          <div class="col-8">VEHICLE TYPE</div>
+          <div class="col-9">VEHICLE BOOKED BY</div>
+          <div class="col-10">DEPARTMENT</div>
+          <div class="col-11">EVENT TYPE</div>
+          <div class="col-12">TRAVEL VENDOR NAME</div>
+          <div class="col-13">BILL NO</div>
+          <div class="col-14">BILL DATE</div>
+          <div class="col-15">BILL AMOUNT</div>
+          <div class="glassmorphic-separator"></div>
+        </a>
+
+        {% for report in travel_objects %}
+        <div class="glassmorphic-separator"></div>
+        <a href="#" class="content-rows">
+          <div class="col-1">{{report.id}}</div>
+          <div class="col-2">{{report.reporting_to}}</div>
+          <div class="col-3">{{report.flight_train_details}}</div>
+          <div class="col-4">{{report.reporting_location}}</div>
+          <div class="col-5">{{report.travel_location}}</div>
+          <div class="col-6">{{report.travel_date}}</div>
+          <div class="col-7">{{report.reporting_time}}</div>
+          <div class="col-8">{{report.vehicle_type}}</div>
+          <div class="col-9">{{report.vehicle_booked_by}}</div>
+          <div class="col-10">{{report.department}}</div>
+          <div class="col-11">{{report.event_type}}</div>
+          <div class="col-12">{{report.travel_vendor_name}}</div>
+          <div class="col-13">{{report.bill_no}}</div>
+          <div class="col-14">{{report.bill_date}}</div>
+          <div class="col-15">{{report.bill_amount}}</div>
+        </a>
+        <div class="glassmorphic-separator"></div>
+        {% endfor %}
+      </div>
+
+      <div class="pagination">
+        <span class="step-links">
+          {% if page.has_previous %}
+          <a href="?page={{ page.previous_page_number }}">previous</a>
+          {% endif %}
+          <span class="current-page">{{ page.number }}</span>
+          {% if page.has_next %}
+          <a href="?page={{ page.next_page_number }}">next</a>
+          {% endif %}
+        </span>
+      </div>
+    </main>
+
+    <div class="overlay">
+      <div class="overlay-content">
+        <button class="close-button">&times;</button>
+        <h2>Reporting Form</h2>
+        <form method="GET">
+          <input type="hidden" name="new_report" value="new_report" />
+
+          <label for="guest-name">REPORTING TO (NAME OF GUEST)</label>
+          <input
+            type="text"
+            id="guest-name"
+            name="guest-name"
+            placeholder="Enter guest name"
+          />
+
+          <label for="flight-details">FLIGHT / TRAIN DETAILS</label>
+          <input
+            type="text"
+            id="flight-details"
+            name="flight-details"
+            placeholder="Enter flight/train details"
+          />
+
+          <label for="pickup-location">REPORTING AT (PICK-UP LOCATION)</label>
+          <input
+            type="text"
+            id="pickup-location"
+            name="pickup-location"
+            placeholder="Enter pick-up location"
+          />
+
+          <label for="drop-location">TRAVEL TO/DROP LOCATION</label>
+          <input
+            type="text"
+            id="drop-location"
+            name="drop-location"
+            placeholder="Enter drop location"
+          />
+
+          <label for="travel-date">TRAVEL DATE</label>
+          <input type="date" id="travel-date" name="travel-date" />
+
+          <label for="reporting-time">REPORTING TIME</label>
+          <input type="date" id="reporting-time" name="reporting-time" />
+
+          <label for="vehicle-type">VEHICLE TYPE</label>
+          <input
+            type="text"
+            id="vehicle-type"
+            name="vehicle-type"
+            placeholder="Enter vehicle type"
+          />
+
+          <label for="booked-by">VEHICLE BOOKED BY</label>
+          <input
+            type="text"
+            id="booked-by"
+            name="booked-by"
+            placeholder="Enter booked by"
+          />
+
+          <label for="department">DEPARTMENT</label>
+          <select id="department" name="department">
+            <option value="" disabled selected hidden>
+              --Select a Department--
+            </option>
+            {% for dep in department_objects %}
+            <option value="{{dep.id}}">{{dep.name}}</option>
+            {% endfor %}
+          </select>
+
+          <label for="event-type">EVENT TYPE</label>
+          <input
+            type="text"
+            id="event-type"
+            name="event-type"
+            placeholder="Enter event type"
+          />
+
+          <label for="vendor-name">TRAVEL VENDOR NAME</label>
+          <select id="vendor-name" name="vendor-name">
+            <option value="" disabled selected hidden>
+              -- TRAVEL VENDOR NAME --
+            </option>
+            {% for vendor in travel_vendor_objects %}
+            <option value="{{vendor.id}}">{{vendor.name}}</option>
+            {% endfor %}
+          </select>
+
+          <label for="bill-no">BILL NO</label>
+          <input
+            type="text"
+            id="bill-no"
+            name="bill-no"
+            placeholder="Enter bill number"
+          />
+
+          <label for="bill-date">BILL DATE</label>
+          <input type="date" id="bill-date" name="bill-date" />
+
+          <label for="bill-amount">BILL AMOUNT</label>
+          <input
+            type="number"
+            id="bill-amount"
+            name="bill-amount"
+            placeholder="Enter bill amount"
+          />
+
+          <label for="note">NOTE</label>
+          <textarea
+            id="note"
+            name="note"
+            placeholder="Enter any additional notes"
+          ></textarea>
+
+          <button class="submit-btn">Submit</button>
+        </form>
+      </div>
+    </div>
+    {% if message %}
+    <div class="success-overlay overlay-active">
+      <div class="glass-card">
+        <button class="close-button">&times;</button>
+        <h2>{{message}}</h2>
+        <p>{{message_inner}}</p>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="add-dept-overlay">
+      <div class="overlay-content">
+        <button class="close-button">&times;</button>
+        <h2>Add A New Department</h2>
+        <form method="GET">
+          <input type="hidden" name="add_dept" value="add_dept" />
+
+          <label for="new_dept_name">New Department Name</label>
+          <input
+            type="text"
+            id="new_dept_name"
+            name="new_dept_name"
+            placeholder="Enter Department Name"
+          />
+
+          <button class="submit-btn">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="add-travel-vendor-overlay">
+      <div class="overlay-content">
+        <button class="close-button">&times;</button>
+        <h2>Add A New Travel Vendor</h2>
+        <form method="GET">
+          <input
+            type="hidden"
+            name="add_travel_vendor"
+            value="add_travel_vendor"
+          />
+
+          <label for="new_travel_vendor">New Travel Vendor Name</label>
+          <input
+            type="text"
+            id="new_travel_vendor"
+            name="new_travel_vendor"
+            placeholder="Enter The Travel Vendor Name"
+          />
+
+          <button class="submit-btn">Submit</button>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script src="{% static 'wheels_app/js/home.js' %}" type="module"></script>
+</html>
