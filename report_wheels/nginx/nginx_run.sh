@@ -2,7 +2,6 @@
 
 set -e
 
-apt-get autoremove -y
 touch /etc/nginx/conf.d/default.conf 
 touch /var/log/nginx/reports_wheels.log
 touch /var/log/nginx/reports_wheels_log_error.log;
