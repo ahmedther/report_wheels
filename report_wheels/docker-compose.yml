@@ -5,7 +5,7 @@ services:
     image: reports_wheels_docker_image
     container_name: reports_wheels_docker_container
     environment:
-      - SERVER_DJANGO_ON=${SERVER_DJANGO_ON}
+      - SERVE_DJANGO_ON=9009
     # command: gunicorn --workers 3 --timeout 86400 --bind 0.0.0.0:8004 reports_wheels.wsgi:application
     volumes:
       - .:/reports_wheels/
@@ -16,7 +16,7 @@ services:
     image: reports_wheels_nginx_image
     container_name: reports_wheels_nginx_container
     environment:
-      - SERVER_DJANGO_ON=${SERVER_DJANGO_ON}
+      - SERVE_DJANGO_ON=9009
     restart: always
     ports:
       - 8009:8009

@@ -1,7 +1,7 @@
 
 
 upstream rw_app_server {
-        server rw_app:${SERVER_DJANGO_ON};
+        server rw_app:${SERVE_DJANGO_ON};
     }
 
 server {
