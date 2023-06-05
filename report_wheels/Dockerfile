@@ -6,8 +6,6 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /reports_wheels
 
-COPY ./ ./
-
 
 RUN apk update \
     && apk upgrade \
