@@ -15,18 +15,32 @@ def home(request):
     context = {}
     try:
         if request.method == "GET":
+            print(request.GET)
+            helper = Helper()
             new_report = request.GET.get("new_report")
             if new_report:
-                context = Helper.post_new_report(request, context)
+                context = helper.post_new_report(request, context)
             add_dept = request.GET.get("add_dept")
             if add_dept:
-                context = Helper.post_add_dept(request, context)
-            print(request.GET)
+                context = helper.post_add_dept(request, context)
             add_travel_vendor = request.GET.get("add_travel_vendor")
             if add_travel_vendor:
-                context = Helper.post_add_travel_vendor(request, context)
-            context = Helper.get_context(request, context)
-            context = Helper.paginator(request, context)
+                context = helper.post_add_travel_vendor(request, context)
+            search_query = request.GET.get("search")
+            if search_query:
+                context = helper.process_search_request(request, search_query, context)
+                context = helper.paginator(request, context)
+                return render(request, "wheels_app/home.html", context)
+            pk_id = request.GET.get("id")
+            if pk_id:
+                context = helper.get_object_with_id(pk_id, context)
+            edit_page = request.GET.get("edit_page")
+            if edit_page:
+                context = helper.get_object_with_id(edit_page, context)
+                context = helper.post_new_report(request, context, edit=True)
+            context = helper.get_context(request, context)
+            context = helper.paginator(request, context)
+
             return render(request, "wheels_app/home.html", context)
     except Exception as e:
         context["message"] = "❌ Error --  Failed!!! ❌ "

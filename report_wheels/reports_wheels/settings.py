@@ -25,32 +25,32 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-st_0bs7%t8mbai+l$_yeue1s_&u5-*e71b2%r)*mt#*g5oh8j#"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
-# DEBUG = False
+DEBUG = False
 
-# ALLOWED_HOSTS = [
-#     "127.0.0.1",
-#     "localhost",
-#     "172.20.100.81",
-#     "http://localhost:8009",
-#     "http://172.20.100.81:8009",
-# ]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "172.20.100.81",
+    "http://localhost:8009",
+    "http://172.20.100.81:8009",
+]
 
 
-# CSRF_TRUSTED_ORIGINS = [
-#     "127.0.0.1",
-#     "localhost",
-#     "172.20.100.81",
-#     "http://localhost:8009",
-#     "http://172.20.100.81:8009",
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    "127.0.0.1",
+    "localhost",
+    "172.20.100.81",
+    "http://localhost:8009",
+    "http://172.20.100.81:8009",
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    # "whitenoise.runserver_nostatic",
+    "whitenoise.runserver_nostatic",
     "wheels_app.apps.WheelsAppConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -62,7 +62,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    # "whitenoise.middleware.WhiteNoiseMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -144,8 +144,8 @@ DATE_FORMAT = "d-m-Y"
 
 
 STATIC_URL = "static/"
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
-# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # Static files (CSS, JavaScript, Images)

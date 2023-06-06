@@ -100,6 +100,10 @@ body {
   font-family: "Geologica", sans-serif;
   /* Adjust the brightness value as needed */
 }
+a {
+  text-decoration: none;
+  color: inherit;
+}
 #background_vid {
   position: fixed;
   top: 0;
@@ -498,3 +502,105 @@ select:focus {
 }
 
 /* Search Button */
+
+.search-form {
+  margin-bottom: 8rem;
+}
+#search {
+  background-color: transparent;
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 400;
+  border: 1px solid white;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+#search:focus {
+  color: white;
+  font-weight: bold;
+}
+
+#search-button {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#search-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+#search-button:active {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Pagination */
+
+.pagination {
+  margin-left: 30rem;
+  display: flex;
+}
+.glass-panel {
+  /* A semi-transparent white background */
+  background-color: rgba(255, 255, 255, 0.06);
+  /* A thin white border */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* A rounded corner */
+  border-radius: 15px;
+  /* A blur effect behind the panel */
+  backdrop-filter: blur(10px);
+  /* A subtle shadow to create depth */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  /* Some padding and margin */
+  padding: 32px;
+  margin: 40px auto;
+}
+
+.glass-button-pg {
+  /* A semi-transparent white background */
+  background-color: rgba(255, 255, 255, 0.1);
+  /* A thin white border */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* A rounded corner */
+  border-radius: 15px;
+  /* A blur effect behind the button */
+  backdrop-filter: blur(30px);
+  /* A light gray text color */
+  color: rgba(255, 255, 255, 0.8);
+  /* Some padding and margin */
+  padding: 24px 32px;
+  margin: 8px;
+  /* A text style */
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.glass-button-pg:hover {
+  /* A slightly more opaque background on hover */
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.glass-button-pg[aria-disabled="true"] {
+  /* A darker text color for disabled buttons */
+  color: rgba(255, 255, 255, 0.4);
+  /* No pointer events for disabled buttons */
+  pointer-events: none;
+}
+
+.glass-button-pg.pg-active {
+  /* A different background color for active state */
+  background-color: rgba(255, 255, 255, 0.3);
+  /* A darker text color for active state */
+  color: rgba(255, 255, 255, 1);
+  /* Adjust the border color for active state */
+  border-color: rgba(255, 255, 255, 0.2);
+  /* Adjust the box shadow for active state */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+}

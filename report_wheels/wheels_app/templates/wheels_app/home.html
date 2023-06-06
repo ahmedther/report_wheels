@@ -45,7 +45,16 @@
     <main>
       <div class="sub-navigation">
         <div class="btn-container">
-          <input type="text" placeholder="Enter text here" />
+          <form class="search-form" action="" method="GET">
+            <input
+              type="text"
+              id="search"
+              name="search"
+              placeholder="Search"
+              value="{{search_query}}"
+            />
+            <button id="search-button" type="submit">Search Report</button>
+          </form>
           <button class="glass-button add-btn">Add A Report</button>
           <button class="glass-button add-dept-btn">Add A Department</button>
           <button class="glass-button add-tra-ven-btn">
@@ -58,7 +67,7 @@
       <div class="main-content">
         <h1 class="main-cont-heading">Vehicle Deployment Data</h1>
         <div class="glassmorphic-separator"></div>
-        <a href="#" class="content-rows">
+        <a href="" class="content-rows">
           <div class="col-1">REPORT NO.</div>
           <div class="col-2">REPORTING TO (NAME OF GUEST)</div>
           <div class="col-3">FLIGHT / TRAIN DETAILS</div>
@@ -79,13 +88,13 @@
 
         {% for report in travel_objects %}
         <div class="glassmorphic-separator"></div>
-        <a href="#" class="content-rows">
+        <a href="?id={{report.id}}" class="content-rows">
           <div class="col-1">{{report.id}}</div>
           <div class="col-2">{{report.reporting_to}}</div>
           <div class="col-3">{{report.flight_train_details}}</div>
           <div class="col-4">{{report.reporting_location}}</div>
           <div class="col-5">{{report.travel_location}}</div>
-          <div class="col-6">{{report.travel_date}}</div>
+          <div class="col-6">{{report.travel_date|date:"d-M-Y"}}</div>
           <div class="col-7">{{report.reporting_time}}</div>
           <div class="col-8">{{report.vehicle_type}}</div>
           <div class="col-9">{{report.vehicle_booked_by}}</div>
@@ -93,32 +102,51 @@
           <div class="col-11">{{report.event_type}}</div>
           <div class="col-12">{{report.travel_vendor_name}}</div>
           <div class="col-13">{{report.bill_no}}</div>
-          <div class="col-14">{{report.bill_date}}</div>
+          <div class="col-14">{{report.bill_date|date:"d-M-Y" }}</div>
           <div class="col-15">{{report.bill_amount}}</div>
         </a>
         <div class="glassmorphic-separator"></div>
         {% endfor %}
-      </div>
 
-      <div class="pagination">
-        <span class="step-links">
-          {% if page.has_previous %}
-          <a href="?page={{ page.previous_page_number }}">previous</a>
-          {% endif %}
-          <span class="current-page">{{ page.number }}</span>
-          {% if page.has_next %}
-          <a href="?page={{ page.next_page_number }}">next</a>
-          {% endif %}
-        </span>
+        <div class="glass-panel">
+          <div class="pagination">
+            {% if travel_objects.has_previous %}
+            <a
+              class="glass-button-pg"
+              href="?{{page_href}}&page={{travel_objects.previous_page_number}}"
+            >
+              Previous
+            </a>
+            {% endif %} {% for page in custom_page_range %}
+            <a
+              class="glass-button-pg {% if page == travel_objects.number %} pg-active {% endif %}"
+              href="?{{page_href}}&page={{page}}"
+            >
+              {{ page }}
+            </a>
+            {% endfor %} {% if travel_objects.has_next %}
+            <a
+              class="glass-button-pg"
+              href="?{{page_href}}&page={{travel_objects.next_page_number}}"
+            >
+              Next
+            </a>
+            {% endif %}
+          </div>
+        </div>
       </div>
     </main>
 
-    <div class="overlay">
+    <div class="overlay {% if edit_obj %} overlay-active {% endif %}">
       <div class="overlay-content">
         <button class="close-button">&times;</button>
         <h2>Reporting Form</h2>
         <form method="GET">
+          {% if edit_obj %}
+          <input type="hidden" name="edit_page" value="{{edit_obj.id}}" />
+          {% else %}
           <input type="hidden" name="new_report" value="new_report" />
+          {% endif %}
 
           <label for="guest-name">REPORTING TO (NAME OF GUEST)</label>
           <input
@@ -126,6 +154,7 @@
             id="guest-name"
             name="guest-name"
             placeholder="Enter guest name"
+            value="{{edit_obj.reporting_to}}"
           />
 
           <label for="flight-details">FLIGHT / TRAIN DETAILS</label>
@@ -134,6 +163,7 @@
             id="flight-details"
             name="flight-details"
             placeholder="Enter flight/train details"
+            value="{{edit_obj.flight_train_details}}"
           />
 
           <label for="pickup-location">REPORTING AT (PICK-UP LOCATION)</label>
@@ -142,6 +172,7 @@
             id="pickup-location"
             name="pickup-location"
             placeholder="Enter pick-up location"
+            value="{{edit_obj.reporting_location}}"
           />
 
           <label for="drop-location">TRAVEL TO/DROP LOCATION</label>
@@ -150,13 +181,24 @@
             id="drop-location"
             name="drop-location"
             placeholder="Enter drop location"
+            value="{{edit_obj.travel_location}}"
           />
 
           <label for="travel-date">TRAVEL DATE</label>
-          <input type="date" id="travel-date" name="travel-date" />
+          <input
+            type="date"
+            id="travel-date"
+            name="travel-date"
+            value="{{ edit_obj.travel_date|date:'Y-m-d' }}"
+          />
 
           <label for="reporting-time">REPORTING TIME</label>
-          <input type="date" id="reporting-time" name="reporting-time" />
+          <input
+            type="date"
+            id="reporting-time"
+            name="reporting-time"
+            value="{{ edit_obj.reporting_time|date:'Y-m-d' }}"
+          />
 
           <label for="vehicle-type">VEHICLE TYPE</label>
           <input
@@ -164,6 +206,7 @@
             id="vehicle-type"
             name="vehicle-type"
             placeholder="Enter vehicle type"
+            value="{{edit_obj.vehicle_type}}"
           />
 
           <label for="booked-by">VEHICLE BOOKED BY</label>
@@ -172,16 +215,21 @@
             id="booked-by"
             name="booked-by"
             placeholder="Enter booked by"
+            value="{{edit_obj.vehicle_booked_by}}"
           />
 
           <label for="department">DEPARTMENT</label>
+
           <select id="department" name="department">
             <option value="" disabled selected hidden>
               --Select a Department--
             </option>
-            {% for dep in department_objects %}
+            {% for dep in department_objects %} {{""}}{{""}}{{""}}{{""}}{{""}}
+            {% if dep.id == edit_obj.department.id%}
+            <option value="{{ dep.id }}" selected>{{ dep.name }}</option>
+            {% else %}
             <option value="{{dep.id}}">{{dep.name}}</option>
-            {% endfor %}
+            {% endif %} {% endfor %}
           </select>
 
           <label for="event-type">EVENT TYPE</label>
@@ -190,6 +238,7 @@
             id="event-type"
             name="event-type"
             placeholder="Enter event type"
+            value="{{edit_obj.event_type}}"
           />
 
           <label for="vendor-name">TRAVEL VENDOR NAME</label>
@@ -197,9 +246,12 @@
             <option value="" disabled selected hidden>
               -- TRAVEL VENDOR NAME --
             </option>
-            {% for vendor in travel_vendor_objects %}
+            {% for vendor in travel_vendor_objects %} {{""}}{{""}}{{""}}{{""}}
+            {% if vendor.id == edit_obj.travel_vendor_name.id%}
+            <option value="{{ vendor.id }}" selected>{{ vendor.name }}</option>
+            {% else %}
             <option value="{{vendor.id}}">{{vendor.name}}</option>
-            {% endfor %}
+            {% endif %} {% endfor %}
           </select>
 
           <label for="bill-no">BILL NO</label>
@@ -208,10 +260,16 @@
             id="bill-no"
             name="bill-no"
             placeholder="Enter bill number"
+            value="{{edit_obj.bill_no}}"
           />
 
           <label for="bill-date">BILL DATE</label>
-          <input type="date" id="bill-date" name="bill-date" />
+          <input
+            type="date"
+            id="bill-date"
+            name="bill-date"
+            value="{{ edit_obj.bill_date|date:'Y-m-d' }}"
+          />
 
           <label for="bill-amount">BILL AMOUNT</label>
           <input
@@ -219,6 +277,7 @@
             id="bill-amount"
             name="bill-amount"
             placeholder="Enter bill amount"
+            value="{{edit_obj.bill_amount}}"
           />
 
           <label for="note">NOTE</label>
@@ -226,7 +285,9 @@
             id="note"
             name="note"
             placeholder="Enter any additional notes"
-          ></textarea>
+          >
+{{edit_obj.note}}</textarea
+          >
 
           <button class="submit-btn">Submit</button>
         </form>
