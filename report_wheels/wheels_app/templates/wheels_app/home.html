@@ -88,7 +88,10 @@
 
         {% for report in travel_objects %}
         <div class="glassmorphic-separator"></div>
-        <a href="?id={{report.id}}" class="content-rows">
+        <a
+          href="?{{page_href}}&page={{travel_objects.number}}&id={{report.id}}"
+          class="content-rows"
+        >
           <div class="col-1">{{report.id}}</div>
           <div class="col-2">{{report.reporting_to}}</div>
           <div class="col-3">{{report.flight_train_details}}</div>
@@ -144,6 +147,7 @@
         <form method="GET">
           {% if edit_obj %}
           <input type="hidden" name="edit_page" value="{{edit_obj.id}}" />
+          <input type="hidden" name="page" value="{{travel_objects.number}}" />
           {% else %}
           <input type="hidden" name="new_report" value="new_report" />
           {% endif %}

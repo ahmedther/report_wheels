@@ -10,6 +10,7 @@ class Helper:
 
     def paginator(self, request, context, paginate_name="travel_objects"):
         page = request.GET.get("page")
+        print(page)
         # results = 14
         results = 16
         paginator = Paginator(context[paginate_name], results)
