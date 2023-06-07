@@ -24,8 +24,8 @@ class TravelReports(models.Model):
     flight_train_details = models.CharField(max_length=255, blank=True, null=True)
     reporting_location = models.CharField(max_length=255, blank=True, null=True)
     travel_location = models.CharField(max_length=255, blank=True, null=True)
-    travel_date = models.DateTimeField(blank=True, null=True)
-    reporting_time = models.DateTimeField(blank=True, null=True)
+    travel_date = models.DateField(blank=True, null=True)
+    reporting_time = models.TimeField(blank=True, null=True)
     vehicle_type = models.CharField(max_length=255, blank=True, null=True)
     vehicle_booked_by = models.CharField(max_length=255, null=True)
     department = models.ForeignKey(
@@ -44,7 +44,7 @@ class TravelReports(models.Model):
         blank=True,
     )
     bill_no = models.CharField(max_length=255, null=True)
-    bill_date = models.DateTimeField(blank=True, null=True)
+    bill_date = models.DateField(blank=True, null=True)
     bill_amount = models.DecimalField(
         max_digits=20, decimal_places=3, blank=True, null=True
     )

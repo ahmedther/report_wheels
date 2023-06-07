@@ -1,7 +1,6 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from wheels_app.models import TravelReports, Department, TravelVendorName
 from django.db.models import Q
-from decimal import Decimal
 
 
 class Helper:
@@ -10,7 +9,6 @@ class Helper:
 
     def paginator(self, request, context, paginate_name="travel_objects"):
         page = request.GET.get("page")
-        print(page)
         # results = 14
         results = 16
         paginator = Paginator(context[paginate_name], results)
@@ -50,56 +48,54 @@ class Helper:
         return context
 
     def post_new_report(self, request, context, edit=False):
-        guest_name = request.GET.get("guest-name")
-        flight_details = request.GET.get("flight-details")
-        pickup_location = request.GET.get("pickup-location")
-        drop_location = request.GET.get("drop-location")
-        travel_date = request.GET.get("travel-date")
-        reporting_time = request.GET.get("reporting-time")
-        vehicle_type = request.GET.get("vehicle-type")
-        booked_by = request.GET.get("booked-by")
-        department_id = request.GET.get("department")
-        if department_id:
-            department_id = Department.objects.get(id=department_id)
-        event_type = request.GET.get("event-type")
-        travel_vendor_id = request.GET.get("vendor-name")
-        if travel_vendor_id:
-            travel_vendor_id = TravelVendorName.objects.get(id=travel_vendor_id)
-        bill_no = request.GET.get("bill-no")
-        bill_date = request.GET.get("bill-date")
-        bill_amount = request.GET.get("bill-amount")
-        note = request.GET.get("note")
+        print(request.GET)
 
-        # Create a new TravelReports instance and set the field values
+        fields = {
+            "guest-name": "reporting_to",
+            "flight-details": "flight_train_details",
+            "pickup-location": "reporting_location",
+            "drop-location": "travel_location",
+            "travel-date": "travel_date",
+            "reporting-time": "reporting_time",
+            "vehicle-type": "vehicle_type",
+            "booked-by": "vehicle_booked_by",
+            "department": "department",
+            "event-type": "event_type",
+            "vendor-name": "travel_vendor_name",
+            "bill-no": "bill_no",
+            "bill-date": "bill_date",
+            "bill-amount": "bill_amount",
+            "note": "note",
+        }
+
         if edit:
             travel_report = context["edit_obj"]
         else:
             travel_report = TravelReports()
-        travel_report.reporting_to = guest_name
-        travel_report.flight_train_details = flight_details
-        travel_report.reporting_location = pickup_location
-        travel_report.travel_location = drop_location
-        travel_report.travel_date = travel_date
-        travel_report.reporting_time = reporting_time
-        travel_report.vehicle_type = vehicle_type
-        travel_report.vehicle_booked_by = booked_by
-        travel_report.department = department_id
-        travel_report.event_type = event_type
-        travel_report.travel_vendor_name = travel_vendor_id
-        travel_report.bill_no = bill_no
-        travel_report.bill_date = bill_date
-        travel_report.bill_amount = bill_amount
-        travel_report.note = note
-        travel_report.created_by = request.user
 
-        # Save the travel report
+        for field, attribute in fields.items():
+            value = request.GET[field] or None
+            if value:
+                print(value)
+                if field == "department":
+                    value = Department.objects.get(id=value)
+                elif field == "vendor-name":
+                    value = TravelVendorName.objects.get(id=value)
+                setattr(travel_report, attribute, value)
+
+        travel_report.created_by = request.user
         travel_report.save()
+
         context["message"] = "✔ Success!"
         context[
             "message_inner"
-        ] = f"A New Field for {travel_report} was Added successfully"  # Replace 'message_inner' with the URL or view name of your success page
+        ] = f"A New Field for {travel_report} was added successfully"
+
         if edit:
-            context["message_inner"] = f"Changes made {travel_report} was successful"
+            context[
+                "message_inner"
+            ] = f"Changes made to {travel_report} were successful"
+
         return context
 
     def post_add_dept(self, request, context):
@@ -150,3 +146,4 @@ class Helper:
     def get_object_with_id(self, pk_id, context):
         context["edit_obj"] = TravelReports.objects.get(id=pk_id)
         return context
+

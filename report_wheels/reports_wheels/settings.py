@@ -12,10 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+from django.db import connections
+from django.db.utils import OperationalError
+from time import sleep
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-st_0bs7%t8mbai+l$_yeue1s_&u5-*e71b2%r)*mt#*g5oh8j#"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.getenv("DEBUG", False))
 
 # DEBUG = False
-
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 # ALLOWED_HOSTS = [
 #     "127.0.0.1",
 #     "localhost",
@@ -37,7 +36,7 @@ DEBUG = True
 #     "http://172.20.100.81:8009",
 # ]
 
-
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
 # CSRF_TRUSTED_ORIGINS = [
 #     "127.0.0.1",
 #     "localhost",
@@ -50,7 +49,7 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
-    # "whitenoise.runserver_nostatic",
+    "whitenoise.runserver_nostatic",
     "wheels_app.apps.WheelsAppConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -62,7 +61,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    # "whitenoise.middleware.WhiteNoiseMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -95,17 +94,30 @@ WSGI_APPLICATION = "reports_wheels.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.environ.get("POSTGRES_DB"),
+#         "USER": "postgres",
+#         "PASSWORD": "ahmed",
+#         "HOST": "172.20.100.81",
+#         "PORT": "5432",
+#     }
+# }
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "reports_wheels",
-        "USER": "postgres",
-        "PASSWORD": "ahmed",
-        "HOST": "172.20.100.81",
-        "PORT": "5432",
+        "NAME": os.environ.get("POSTGRES_DB"),
+        "USER": os.environ.get("POSTGRES_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": os.environ.get("POSTGRES_HOST"),
+        "PORT": os.environ.get("POSTGRES_PORT"),
     }
 }
 
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -144,8 +156,8 @@ DATE_FORMAT = "d-m-Y"
 
 
 STATIC_URL = "static/"
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
-# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # Static files (CSS, JavaScript, Images)
@@ -163,3 +175,24 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 86400
 
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
+
+
+# Call the function to wait for PostgreSQL
+
+
+# def wait_for_postgres():
+#     while True:
+#         try:
+#             # Try to connect to PostgreSQL
+#             conn = connections["default"]
+#             conn.ensure_connection()
+
+#             # If connection succeeds, break the loop
+#             break
+#         except OperationalError:
+#             # If connection fails, wait for a while and try again
+#             print("Waiting for PostgreSQL to become available...")
+#             sleep(1)
+
+
+# wait_for_postgres()
