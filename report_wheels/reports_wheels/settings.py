@@ -12,9 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-from django.db import connections
-from django.db.utils import OperationalError
-from time import sleep
 
 
 # Quick-start development settings - unsuitable for production

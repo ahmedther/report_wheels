@@ -197,12 +197,8 @@
           />
 
           <label for="reporting-time">REPORTING TIME</label>
-          <input
-            type="time"
-            id="reporting-time"
-            name="reporting-time"
-            value="{{ edit_obj.reporting_time }}"
-          />
+          <input type="time" id="reporting-time" name="reporting-time" value="{{
+          edit_obj.reporting_time|date:"H:i" }}" />
 
           <label for="vehicle-type">VEHICLE TYPE</label>
           <input

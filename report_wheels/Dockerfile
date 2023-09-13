@@ -1,6 +1,9 @@
 # Build stage
 FROM python:3.11-alpine as builder
 
+
+WORKDIR /reports_wheels
+
 COPY ./requirements.txt /reports_wheels/requirements.txt
 
 RUN apk update \
@@ -18,13 +21,16 @@ RUN apk update \
 # Runtime stage
 FROM python:3.11-alpine
 
+WORKDIR /reports_wheels
+
 COPY --from=builder /py /py
+
+COPY . /reports_wheels
 
 LABEL maintainer='ahmed'
 
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR /reports_wheels
 
 ENV PATH="/reports_wheels/scripts:/py/bin:$PATH"
 

@@ -65,6 +65,7 @@ def login_page(request):
                 "error"
             ] = "Wrong User ID or Password. Try again or call 33333 /33330 to reset it."
             return render(request, "wheels_app/login_page.html", context)
+
         if user:
             login(request, user)
             user_full_name = request.user.get_full_name()
